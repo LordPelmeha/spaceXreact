@@ -1,52 +1,55 @@
 import * as d3 from "d3";
 import * as Geo from "../geo.json";
-import {useRef, useEffect} from "react";
+import { useMemo } from "react";
 
-function Map(props){
+function Map({ launchpads, hoveredPadId }) {
     const width = 1000;
     const height = 600;
-    const margin = {
-        top: 20,
-        right: 20,
-        bottom: 20,
-        left: 100
-    };
-    const containerRef = useRef(null);
-    useEffect(()=> { const svg = d3.select(containerRef.current).append("svg");
-        svg.selectAll("*").remove();
-        svg.attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom )
-            .append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`)
 
-        const projection = d3.geoMercator()
-            .scale(70)
+    const projection = useMemo(() => {
+        return d3
+            .geoMercator()
+            .scale(130)
             .center([0, 20])
-            .translate([width/2 - margin.left, height/2 - margin.top]);
-        const g = svg.append("g");
+            .translate([width / 2, height / 2]);
+    }, []);
 
-        g.selectAll("path")
-            .data(Geo.features)
-            .enter()
-            .append("path")
-            .attr("class", "topo")
-            .attr("d", d3.geoPath().projection(projection))
-            .style("opacity", .7)
-        const zoom = d3.zoom()
-            .scaleExtent([1, 8])
-            .on('zoom', function(event) {
-                g.selectAll('path')
-                    .attr('transform', event.transform);
-            });
+    const path = d3.geoPath().projection(projection);
 
-        svg.call(zoom); }, []);
+    const project = ([lon, lat]) => {
+        const p = projection([lon, lat]);
+        return p ? [p[0], p[1]] : null;
+    };
 
-
-
-    return(
-        <div className="mapContainer map" ref={containerRef}>
+    return (
+        <div className="mapContainer map">
+            <svg width={width} height={height} className="map-svg">
+                {Geo.features.map(feature => (
+                    <path
+                        key={feature.id}
+                        className="topo"
+                        d={path(feature)}
+                    />
+                ))}
+                {launchpads.map(pad => {
+                    const pos = pad.latitude != null && pad.longitude != null
+                        ? project([pad.longitude, pad.latitude])
+                        : null;
+                    if (!pos) return null;
+                    const highlighted = pad.id === hoveredPadId;
+                    return (
+                        <circle
+                            key={pad.id}
+                            className={`launchpad ${highlighted ? "highlighted" : ""}`}
+                            cx={pos[0]}
+                            cy={pos[1]}
+                            r={highlighted ? 8 : 5}
+                        />
+                    );
+                })}
+            </svg>
         </div>
-    )
+    );
 }
 
-export {Map}
+export { Map };

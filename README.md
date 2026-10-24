@@ -7,7 +7,3 @@ the launchpad related to this launch.
 
 Link to D3 Geo docs:
 https://github.com/d3/d3-geo
-
-[ll.thespacedevs.com/2.3.0](https://ll.thespacedevs.com/2.3.0)
-
-Учти, что там rate-limit стоит, запросы лучше кэшировать.

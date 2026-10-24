@@ -1,83 +1,17 @@
 .main {
     display: flex;
-    height: 100vh;
-    gap: 20px;
-    padding: 20px;
-    box-sizing: border-box;
 }
 
 .aside {
-    flex: 0 0 420px;
+    flex-grow: 0.3;
 }
 
-#listContainer {
-    height: 100%;
-    overflow-y: auto;
-    border: 1px solid black;
-    padding: 10px;
-    box-sizing: border-box;
+.content {
+    flex-grow: 0.7;
 }
-
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.launch-item {
-    padding: 6px 10px;
-    margin-bottom: 6px;
-    border-radius: 4px;
-    cursor: pointer;
-    user-select: none;
-    font-size: 14px;
-    border: 1px solid transparent;
-    white-space: nowrap;
+#listContainer{
+    height: 300px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.launch-item.active {
-    background: #ffdd57;
-    border-color: #f0ad00;
-    font-weight: bold;
-}
-
-.launch-item:hover {
-    background: #f0f0f0;
-}
-
-.pad-label {
-    margin-left: 8px;
-    font-size: 12px;
-    color: #666;
-    font-weight: normal;
-    transition: color 0.15s ease;
-}
-
-.mapContainer {
-    flex: 1;
-    position: relative;
-    border: 1px solid black;
-}
-
-.topo {
-    fill: #eaeaea;
-    stroke: #fff;
-    stroke-width: 0.5;
-}
-
-.launchpad {
-    fill: #d9534f;
-    stroke: #fff;
-    stroke-width: 1.5;
-    cursor: pointer;
-    transition: r 0.2s ease, fill 0.2s ease, stroke 0.2s ease, stroke-width 0.2s ease;
-}
-
-.launchpad.highlighted {
-    fill: #ffd700;
-    stroke: #b8860b;
-    stroke-width: 2;
+    overflow-y: scroll;
+    border: black 1px solid;
 }
